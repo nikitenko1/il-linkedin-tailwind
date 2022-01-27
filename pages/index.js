@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { signOut } from 'next-auth/react';
 
 export default function Home() {
   return (
@@ -9,7 +10,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <button
+        onClick={signOut}
+        className="text-blue-700 font-semibold rounded-full px-5 py-1.5 transition-all hover:border-2 border border-blue-700"
+      >
+        Sign out
+      </button>
     </div>
   );
 }
