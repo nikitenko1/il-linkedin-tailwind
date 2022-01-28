@@ -5,9 +5,9 @@ import { Avatar } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 
 const Sidebar = () => {
-  // The useSession() React Hook in the NextAuth.js client is the easiest way
-  // to check if someone is signed in.
-  const { data: session } = useSession();
+  // useSession()​ Client Side: Yes Server Side: No
+  // The useSession() React Hook in the NextAuth.js to check if someone is signed in.
+  const { data: session, status } = useSession();
   return (
     <div className="space-y-2 min-w-max max-w-lg">
       {/* Top */}
@@ -27,10 +27,10 @@ const Sidebar = () => {
         />
         <div className="mt-5 py-4 space-y-0.5">
           <h4 className="hover:underline decoration-purple-700 underline-offset-2 cursor-pointer">
-            Max Smith
+            {session?.user?.name}
           </h4>
           <p className="text-black/60 dark:text-white/75 text-sm">
-            example@example.com
+            {session?.user?.email}
           </p>
         </div>
         <div className="hidden md:inline text-left dark:text-white/75 text-sm">
