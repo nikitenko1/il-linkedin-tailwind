@@ -4,8 +4,14 @@ import Feed from '../components/Feed';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { useRouter } from 'next/router';
+import { AnimatePresence } from 'framer-motion';
+import Modal from '../components/Modal';
+import { useRecoilState } from 'recoil';
+import { modalState, modalTypeState } from '../atoms/modalAtom';
 
 export default function Home() {
+  const [modalOpen, setModalOpen] = useRecoilState(modalState);
+  const [modalType, setModalType] = useRecoilState(modalTypeState);
   const router = useRouter();
   // useSession()​ Client Side: Yes Server Side: No
   // The useSession() React Hook in the NextAuth.js to check if someone is signed in.
@@ -26,7 +32,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="flex justify-center gap-x-5 px-4 sm:px-12">
+      <main className="flex gap-x-5 px-4 sm:px-12">
         <div className="flex flex-col md:flex-row gap-5">
           <Sidebar />
 
@@ -34,6 +40,13 @@ export default function Home() {
         </div>
 
         {/* Widgets */}
+        {/* By wrapping the new component in AnimatePresence, when it's removed it'll automatically
+        animate back to the original component's position as an exit animation. */}
+        <AnimatePresence>
+          {modalOpen && (
+            <Modal handleClose={() => setModalOpen(false)} type={modalType} />
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
