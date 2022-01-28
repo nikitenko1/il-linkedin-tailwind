@@ -17,4 +17,7 @@
   .sidebarLink {
     @apply text-[13px] font-medium text-blue-500 hover:underline underline-offset-1 cursor-pointer px-2.5;
   }
+  .inputButton {
+    @apply flex items-center font-medium cursor-pointer space-x-2 text-sm;
+  }
 }

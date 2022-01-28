@@ -1,9 +1,21 @@
 import Head from 'next/head';
+import { getSession, useSession } from 'next-auth/react';
 import Feed from '../components/Feed';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
+  // useSession()​ Client Side: Yes Server Side: No
+  // The useSession() React Hook in the NextAuth.js to check if someone is signed in.
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      router.push('/home');
+    },
+  });
   return (
     <div className="bg-[#f3f2ef] dark:bg-black dark:text-white h-screen overflow-y-scroll md:space-y-6">
       <Head>
@@ -25,4 +37,23 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+// getSession()​ Client Side: Yes; Server Side: Yes: Yes
+// When calling getSession() server side, you need to pass {req} or context object.
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/home',
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
 }
