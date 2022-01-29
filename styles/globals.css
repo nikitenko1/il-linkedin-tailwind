@@ -20,4 +20,7 @@
   .inputButton {
     @apply flex items-center font-medium cursor-pointer space-x-2 text-sm;
   }
+  .postButton {
+    @apply flex items-center justify-center space-x-2 cursor-pointer hover:bg-black/10 dark:hover:bg-black/20  w-full  py-2.5 rounded transition ease-out font-medium;
+  }
 }

@@ -1,6 +1,9 @@
-import React from 'react';
+import { useSession } from 'next-auth/react';
 
 const HeaderLink = ({ Icon, text, avatar, feed, active, hidden }) => {
+  // useSession()​ Client Side: Yes Server Side: No
+  // The useSession() React Hook in the NextAuth.js to check if someone is signed in.
+  const { data: session } = useSession();
   return (
     <div
       className={`cursor-pointer flex flex-col justify-center items-center 
@@ -12,7 +15,11 @@ const HeaderLink = ({ Icon, text, avatar, feed, active, hidden }) => {
           : 'text-gray-500 hover:text-gray-700'
       }`}
     >
-      {avatar ? <Icon className="!h-7 !w-7 lg:!-mb-1" /> : <Icon />}
+      {avatar ? (
+        <Icon className="!h-7 !w-7 lg:!-mb-1" src={session?.user?.image} />
+      ) : (
+        <Icon />
+      )}
       <h4
         className={`text-sm ${
           feed && 'hidden lg:flex justify-center w-full mx-auto'
