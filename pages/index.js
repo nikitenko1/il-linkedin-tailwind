@@ -9,8 +9,9 @@ import Modal from '../components/Modal';
 import { useRecoilState } from 'recoil';
 import { modalState, modalTypeState } from '../atoms/modalAtom';
 import { connectToDatabase } from '../utils/connectDB';
+import Widgets from '../components/Widgets';
 
-export default function Home({ posts }) {
+export default function Home({ posts, articles }) {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [modalType, setModalType] = useRecoilState(modalTypeState);
   const router = useRouter();
@@ -39,8 +40,7 @@ export default function Home({ posts }) {
 
           <Feed posts={posts} />
         </div>
-
-        {/* Widgets */}
+        <Widgets articles={articles} />
         {/* By wrapping the new component in AnimatePresence, when it's removed it'll automatically
         animate back to the original component's position as an exit animation. */}
         <AnimatePresence>
@@ -75,9 +75,14 @@ export async function getServerSideProps(context) {
     .toArray();
 
   // Get Google News API
+  const results = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=ua&apiKey=${process.env.NEWS_API_KEY}`
+  ).then((res) => res.json());
+  // Example response { "status": "ok", "totalResults": 56, -"articles": [...
   return {
     props: {
       session,
+      articles: results.articles,
       posts: posts.map((post) => ({
         _id: post._id.toString(),
         input: post.input,
